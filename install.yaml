@@ -52,7 +52,7 @@
 #    command: gem install --verbose r10k creates="/usr/bin/r10k"
 #    become: yes
   - name: Start the puppetmaster service
-    service: "name=puppetserver state=start"
+    service: "name=puppetserver state=started"
     become: yes
   #- name: "puppetmaster must have a /etc/hosts entry"
     #lineinfile: dest=/etc/hosts line="127.0.0.1 puppet puppetmaster" state=present
