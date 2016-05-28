@@ -1,6 +1,8 @@
 Ansible-puppetmaster
 ------------------------
 
+Updates are still a work in progress. I curently does not work.
+
 Install and configure puppetmaster via ansible!
 
 Actions

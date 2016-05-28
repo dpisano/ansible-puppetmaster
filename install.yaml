@@ -57,7 +57,7 @@
   #- name: "puppetmaster must have a /etc/hosts entry"
     #lineinfile: dest=/etc/hosts line="127.0.0.1 puppet puppetmaster" state=present
   - name: Set puppet to start on boot
-    command: puppet resource service puppet ensure=running enable=true
+    command: /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
   - name: puppet agent --test
     command: puppet agent --test --server {{ansible_fqdn}} creates="/var/lib/puppet/ssl/certs/{{ ansible_fqdn }}"
     become: yes
@@ -89,6 +89,6 @@
     service: "name={{item}} state=restarted"
     become: yes
     with_items: [
-      "puppetmaster",
+      "puppetserver",
       "puppetdb",
     ]
