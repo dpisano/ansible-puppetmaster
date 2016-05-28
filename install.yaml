@@ -32,8 +32,8 @@
     with_items: [
       "puppetserver",
       "puppetdb",
-      "hiera",
-      "puppetdb-terminus",
+      "puppet-agent",
+      "puppetdb-termini",
       "git"
       ]
     when: ansible_os_family  == "Debian"
@@ -43,19 +43,21 @@
     with_items: [
       "puppetserver",
       "puppetdb",
-      "hiera",
-      "puppetdb-terminus",
+      "puppet-agent",
+      "puppetdb-termini",
       "git"
       ]
     when: ansible_os_family  == "RedHat" or ansible_os_family  == "Centos"
-  - name: install r10k
-    command: gem install --verbose r10k creates="/usr/bin/r10k"
-    become: yes
+#  - name: install r10k
+#    command: gem install --verbose r10k creates="/usr/bin/r10k"
+#    become: yes
   - name: Start the puppetmaster service
-    service: "name=puppetserver state=restarted"
+    service: "name=puppetserver state=start"
     become: yes
   #- name: "puppetmaster must have a /etc/hosts entry"
     #lineinfile: dest=/etc/hosts line="127.0.0.1 puppet puppetmaster" state=present
+  - name: Set puppet to start on boot
+    command: puppet resource service puppet ensure=running enable=true
   - name: puppet agent --test
     command: puppet agent --test --server {{ansible_fqdn}} creates="/var/lib/puppet/ssl/certs/{{ ansible_fqdn }}"
     become: yes
