@@ -34,7 +34,6 @@
       "puppetdb",
       "puppet-agent",
       "puppetdb-termini",
-      "puppet-common",
       "git"
       ]
     when: ansible_os_family  == "Debian"
@@ -46,7 +45,6 @@
       "puppetdb",
       "puppet-agent",
       "puppetdb-termini",
-      "puppet-common",
       "git"
       ]
     when: ansible_os_family  == "RedHat" or ansible_os_family  == "Centos"
