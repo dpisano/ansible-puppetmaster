@@ -1,16 +1,16 @@
 - hosts: all
-  gather_facts: yes   
+  gather_facts: yes
   vars:
-    puppet_download: http://apt.puppetlabs.com/puppetlabs-release
-    puppet_name: puppetlabes-release
+    puppet_download: http://apt.puppetlabs.com/
+    puppet_name: puppetlabes-release-pc1
     download_folder: /var/tmp
     puppet_archive: "{{download_folder}}/{{puppet_name}}.deb"
-    
+
   tasks:
   - name: Update apt-cache [apt]
     apt: "update_cache=yes"
-    sudo: yes
-    when: ansible_os_family  == "Debian" 
+    become: yes
+    when: ansible_os_family  == "Debian"
   - name: Install wget [apt]
     apt: "pkg=wget"
     when: ansible_os_family  == "Debian"
@@ -19,19 +19,19 @@
     when: ansible_os_family  == "Debian"
   - name: Install the puppet repo package [apt]
     apt: "deb={{ puppet_archive }}"
-    sudo: yes
+    become: yes
     when: ansible_os_family  == "Debian"
   - name: Install the puppet repo package [yum]
     yum: "name=http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm"
-    sudo: yes
+    become: yes
     when: ansible_os_family  == "RedHat" or ansible_os_family  == "Centos"
   - name: Update apt-cache
     apt: "update_cache=yes"
-    sudo: yes
+    become: yes
     when: ansible_os_family  == "Debian"
   - name: Install all the required packaes for a puppetmaster [apt]
     apt: "pkg={{item}} state=present"
-    sudo: yes
+    become: yes
     with_items: [
       "puppetmaster",
       "puppetdb",
@@ -43,7 +43,7 @@
     when: ansible_os_family  == "Debian"
   - name: Install all the required packaes for a puppetmaster [yum]
     yum: "name={{item}} state=present"
-    sudo: yes
+    become: yes
     with_items: [
       "puppet-server",
       "puppetdb",
@@ -55,45 +55,43 @@
     when: ansible_os_family  == "RedHat" or ansible_os_family  == "Centos"
   - name: install r10k
     command: gem install --verbose r10k creates="/usr/bin/r10k"
-    sudo: yes
+    become: yes
   - name: Start the puppetmaster service
     service: "name=puppetmaster state=restarted"
-    sudo: yes
+    become: yes
   #- name: "puppetmaster must have a /etc/hosts entry"
-    #lineinfile: dest=/etc/hosts line="127.0.0.1 puppet puppetmaster" state=present 
+    #lineinfile: dest=/etc/hosts line="127.0.0.1 puppet puppetmaster" state=present
   - name: puppet agent --test
     command: puppet agent --test --server {{ansible_fqdn}} creates="/var/lib/puppet/ssl/certs/{{ ansible_fqdn }}"
-    sudo: yes
+    become: yes
   - name: puppetdb ssl-setup
     command: puppetdb ssl-setup creates="/etc/puppetdb/ssl"
-    sudo: yes
+    become: yes
   - name: Install default hiera.conf
     template: src=hiera.conf.j2 dest=/etc/puppet/hiera.conf owner=root group=root mode=0644
-    sudo: yes
+    become: yes
   - name: Install default puppet.conf
     template: src=puppet.conf.j2 dest=/etc/puppet/puppet.conf owner=root group=root mode=0644
-    sudo: yes
+    become: yes
   - name: Install default puppetdb.conf
     template: src=puppetdb.conf.j2 dest=/etc/puppet/puppetdb.conf owner=root group=root mode=0644
-    sudo: yes
+    become: yes
   - name: Install default routes.yaml
     template: src=routes.yaml.j2 dest=/etc/puppet/routes.yaml owner=root group=root mode=0644
-    sudo: yes
+    become: yes
   - name: Install default r10k.yaml
     template: src=r10k.yaml.j2 dest=/etc/r10k.yaml owner=root group=root mode=0644
-    sudo: yes
+    become: yes
   - name: r10k deploy
     command: r10k deploy environment creates="/etc/puppet/environments/master"
-    sudo: yes
+    become: yes
   - name: install puppet-lint
     gem: name=puppet-lint
-    sudo: yes  
+    become: yes
   - name: Start all the services.
     service: "name={{item}} state=restarted"
-    sudo: yes
+    become: yes
     with_items: [
       "puppetmaster",
       "puppetdb",
     ]
-      
-    
