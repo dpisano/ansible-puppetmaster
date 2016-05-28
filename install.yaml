@@ -1,8 +1,8 @@
 - hosts: all
   gather_facts: yes
   vars:
-    puppet_download: http://apt.puppetlabs.com/
-    puppet_name: puppetlabes-release-pc1
+    puppet_download: http://apt.puppetlabs.com/puppetlabes-release-pc1
+    puppet_name: puppetlabes-release.deb
     download_folder: /var/tmp
     puppet_archive: "{{download_folder}}/{{puppet_name}}.deb"
 
@@ -15,7 +15,7 @@
     apt: "pkg=wget"
     when: ansible_os_family  == "Debian"
   - name: Download the Puppet repo package
-    command: "wget -q -O {{puppet_archive}} {{puppet_download}}-{{ansible_distribution_release}} creates={{puppet_archive}}"
+    get_url: url={{ puppet_download }}-{{ ansible_distribution_release }}.deb dest={{ puppet_archive }}
     when: ansible_os_family  == "Debian"
   - name: Install the puppet repo package [apt]
     apt: "deb={{ puppet_archive }}"
