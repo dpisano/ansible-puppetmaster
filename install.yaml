@@ -1,7 +1,7 @@
 - hosts: all
   gather_facts: yes
   vars:
-    puppet_download: http://apt.puppetlabs.com/puppetlabes-release-pc1
+    puppet_download: http://apt.puppetlabs.com/puppetlabs-release-pc1
     puppet_name: puppetlabes-release.deb
     download_folder: /var/tmp
     puppet_archive: "{{download_folder}}/{{puppet_name}}.deb"
@@ -10,9 +10,6 @@
   - name: Update apt-cache [apt]
     apt: "update_cache=yes"
     become: yes
-    when: ansible_os_family  == "Debian"
-  - name: Install wget [apt]
-    apt: "pkg=wget"
     when: ansible_os_family  == "Debian"
   - name: Download the Puppet repo package
     get_url: url={{ puppet_download }}-{{ ansible_distribution_release }}.deb dest={{ puppet_archive }}
@@ -45,10 +42,9 @@
     yum: "name={{item}} state=present"
     become: yes
     with_items: [
-      "puppet-server",
+      "puppetserver",
       "puppetdb",
       "hiera",
-      "facter",
       "puppetdb-terminus",
       "git"
       ]
@@ -57,7 +53,7 @@
     command: gem install --verbose r10k creates="/usr/bin/r10k"
     become: yes
   - name: Start the puppetmaster service
-    service: "name=puppetmaster state=restarted"
+    service: "name=puppetserver state=restarted"
     become: yes
   #- name: "puppetmaster must have a /etc/hosts entry"
     #lineinfile: dest=/etc/hosts line="127.0.0.1 puppet puppetmaster" state=present
