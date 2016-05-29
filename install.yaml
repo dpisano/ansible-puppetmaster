@@ -52,7 +52,7 @@
 #    command: gem install --verbose r10k creates="/usr/bin/r10k"
 #    become: yes
   - name: Change Java heap size
-    command: sed -i 's/-Xms2g -Xmx2g/-Xms1g -Xmx1g/g /etc/default/puppetserver'
+    command: sed -i 's/-Xms2g -Xmx2g/-Xms1g -Xmx1g/g' /etc/default/puppetserver'
     become: yes
   - name: Start the puppetmaster service
     service: "name=puppetserver state=started"
