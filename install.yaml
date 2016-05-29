@@ -51,6 +51,9 @@
 #  - name: install r10k
 #    command: gem install --verbose r10k creates="/usr/bin/r10k"
 #    become: yes
+  - name: Change Java heap size
+    command: sed -i 's/-Xms2g -Xmx2g/-Xms1g -Xmx1g/g /etc/default/puppetserver'
+    become: yes
   - name: Start the puppetmaster service
     service: "name=puppetserver state=started"
     become: yes
@@ -59,7 +62,7 @@
   - name: Set puppet to start on boot
     command: /opt/puppetlabs/bin/puppet resource service puppet ensure=running enable=true
   - name: puppet agent --test
-    command: puppet agent --test --server {{ansible_fqdn}} creates="/var/lib/puppet/ssl/certs/{{ ansible_fqdn }}"
+    command: /opt/puppetlabs/bin/puppet agent --test --server {{ansible_fqdn}} creates="/var/lib/puppet/ssl/certs/{{ ansible_fqdn }}"
     become: yes
   - name: puppetdb ssl-setup
     command: puppetdb ssl-setup creates="/etc/puppetdb/ssl"
