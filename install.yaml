@@ -65,7 +65,7 @@
     command: /opt/puppetlabs/bin/puppet agent --test --server {{ansible_fqdn}} creates="/var/lib/puppet/ssl/certs/{{ ansible_fqdn }}"
     become: yes
   - name: puppetdb ssl-setup
-    command: puppetdb ssl-setup creates="/etc/puppetdb/ssl"
+    command: /opt/puppetlabs/bin/puppetdb ssl-setup creates="/etc/puppetdb/ssl"
     become: yes
   - name: Install default hiera.conf
     template: src=hiera.conf.j2 dest=/etc/puppet/hiera.conf owner=root group=root mode=0644
