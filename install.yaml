@@ -49,7 +49,7 @@
       ]
     when: ansible_os_family  == "RedHat" or ansible_os_family  == "Centos"
 #  - name: install r10k
-#    command: /opt/puppetlabs/puppet/bin/gem install --verbose r10k creates="/usr/bin/r10k"
+#    command: /opt/puppetlabs/puppet/bin/gem install --verbose r10k creates="/opt/puppetlabs/puppet/bin/r10k"
 #    become: yes
   - name: Change Java heap size
     command: sed -i 's/-Xms2g -Xmx2g/-Xms1g -Xmx1g/g' /etc/default/puppetserver
@@ -86,7 +86,7 @@
 #    command: r10k deploy environment creates="/etc/puppetlabs/puppet/environments/master"
 #    become: yes
   - name: install puppet-lint
-    gem: name=puppet-lint
+    command: /opt/puppetlabs/puppet/bin/gem install --verbose puppet-lint creates="/opt/puppetlabs/puppet/bin/puppet-lint"
     become: yes
   - name: Start all the services.
     service: "name={{item}} state=restarted"
