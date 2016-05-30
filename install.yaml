@@ -62,7 +62,7 @@
 #    become: yes
 
   - name: Change Java heap size
-    template: src=puppet.conf.j2 dest=/etc/default/puppetserver owner=root group=root mode=0644
+    template: src=puppetserver.j2 dest=/etc/default/puppetserver owner=root group=root mode=0644
 #    command: sed -i 's/-Xms2g -Xmx2g/-Xms1g -Xmx1g/g' /etc/default/puppetserver
     become: yes
 
