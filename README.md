@@ -1,7 +1,7 @@
 Ansible-puppetmaster
 ------------------------
 
-Updates are still a work in progress. I curently does not work.
+Updates are still a work in progress.
 
 Install and configure puppetmaster via ansible!
 
@@ -11,23 +11,23 @@ Actions
 Everything that will get a real puppetmaster up and running.
 
 Install
-* puppet-master (3.6.2)
-* puppetdb & puppetdb-terinus (2.0.0)
-* hiera (1.3.4)
-* facter (2.0.2)
-* r10k (1.2.1)
+* puppetserver (4.5.0)
+* ~~puppetdb & puppetdb-terinus (2.0.0)~~
+* hiera
+* facter
+* ~~r10k (1.2.1)~~
 * git
 * puppet-lint
 
 Configure puppetmater
 * with puppetdb via ssl (:8081)
-* hieradata in /etc/puppet/environments
-* r10k will sync hieradata
+* ~~hieradata in /etc/puppet/environments~~
+* ~~r10k will sync hieradata~~
 
 Installing
 ------------
 
-	$ git clone git@github.com:daniellawrence/ansible-puppetmaster.git
+	$ git clone git@github.com:dpisano/ansible-puppetmaster.git
 	$ mkvirtualenv ansible
 	$ pip install ansible
 
